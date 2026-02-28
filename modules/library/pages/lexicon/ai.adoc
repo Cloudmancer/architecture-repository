@@ -1,0 +1,48 @@
+== Artificial Intelligence (AI)
+
+[cols="20%,15%,65%", options="header", stripes=even]
+|===
+| Term | Classification | Meaning
+
+| Artificial Intelligence
+| Foundational
+| A broad field of computer science concerned with building systems that can
+perform tasks that would typically require human intelligence. These tasks
+include reasoning, learning, problem solving, understanding language, and
+recognising patterns.
+
+| Large Language Model (LLM)
+|
+| A category of machine learning model trained on large volumes of text
+data using a transformer architecture. Designed to understand, reason
+over, and generate human language at scale. LLMs are the foundation of
+most modern AI assistants, code generation tools, and document processing
+capabilities.
+
+| Machine Learning
+|
+| A specific approach to artificial intelligence in which systems learn to perform
+tasks by identifying patterns in data rather than being explicitly programmed
+with rules. A machine learning system improves its performance on a task as
+it is exposed to more data.
+
+| Model
+| Foundational
+| A mathematical structure trained on data to recognise patterns and produce
+outputs such as predictions, classifications, or generated content. A model
+is the artifact that results from training, it encodes learned relationships
+between inputs and outputs without explicitly being programmed with rules.
+
+| Structured Data
+| Data Classification
+| Data that is organised into a predefined schema with clearly defined
+fields, types, and relationships. It is stored in a format that makes it
+directly queryable and processable without transformation.
+
+| Unstructured Data
+| Data Classification
+| Data that does not conform to a predefined schema or data model. It
+carries information but requires interpretation, transformation, or
+specialised processing to extract meaning from it in a consistent way.
+
+|===
