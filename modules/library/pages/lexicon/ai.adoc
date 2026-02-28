@@ -1,0 +1,441 @@
+== Artificial Intelligence (AI)
+
+[cols="20%,15%,65%", options="header", stripes=even]
+|===
+| Term | Classification | Meaning
+
+| AI Developer
+| Role
+| A software developer who builds applications and systems that integrate
+AI capabilities, typically by consuming models via APIs or frameworks.
+Distinct from an AI Engineer in that the focus is on application construction
+rather than model development or infrastructure.
+
+| AI Engineer
+| Role
+| A technical practitioner who designs, builds, and operationalizes AI
+systems, spanning model selection, training pipelines, inference
+infrastructure, and integration patterns. Bridges the gap between data
+science and production engineering.
+
+| AI Ethics
+| Discipline
+| The study and application of moral principles to the design, development,
+and deployment of AI systems, addressing concerns such as fairness,
+transparency, accountability, and harm prevention. It is increasingly a
+governance and compliance concern for organizations deploying AI at scale.
+
+| AI Strategist
+| Role
+| A practitioner responsible for defining how an organization adopts and
+derives value from AI, aligning AI investments with business objectives
+and risk appetite. Operates at the intersection of technology, business
+strategy, and governance rather than hands-on model or application development.
+
+| Application Programming Interface (API)
+| Integration Concept
+| A defined contract that allows software systems to communicate with each
+other by exposing a set of operations, inputs, and outputs. In the context
+of AI, APIs are the primary mechanism through which models are consumed.
+A client sends a request containing a prompt or data, and the model returns
+a response without the consumer needing to host or understand the underlying model.
+
+| Artificial General Intelligence (AGI)
+| Model Classification
+| A hypothetical form of AI capable of performing any intellectual task that
+a human can, with the same degree of generalization and adaptability across
+domains. No AGI system exists today. All current AI systems are narrow,
+meaning they are specialized to specific tasks or domains.
+
+| Artificial Intelligence (AI)
+| Foundational
+| A broad field of computer science concerned with building systems that can
+perform tasks that would typically require human intelligence. These tasks
+include reasoning, learning, problem solving, understanding language, and
+recognizing patterns.
+
+| Autonomous Robots
+| AI Subfield
+| Physical systems that use AI to perceive their environment, make decisions,
+and execute actions without continuous human control. They combine computer
+vision, sensor fusion, planning algorithms, and machine learning to operate
+in dynamic real-world conditions.
+
+| Autoregressive Model
+| Model Architecture
+| A model that generates output sequentially, predicting each element based
+on all previously generated elements. Most LLMs are autoregressive. They
+generate text one token at a time, with each token conditioned on the full
+preceding sequence.
+
+| Computer Vision
+| AI Subfield
+| A subfield of AI concerned with enabling machines to interpret and
+understand visual information from images and video. It underpins
+capabilities such as object detection, facial recognition, medical imaging
+analysis, and autonomous navigation.
+
+| Convolutional Neural Network (CNN)
+| Model Architecture
+| A neural network architecture designed for processing grid-structured data
+such as images, using convolutional layers to detect local patterns like
+edges, textures, and shapes. CNNs were the dominant architecture for computer
+vision tasks before transformer-based vision models became prevalent.
+
+| Data Science
+| Discipline
+| An interdisciplinary field that combines statistics, programming, and domain
+knowledge to extract insight and value from data. It encompasses the full
+lifecycle from data collection and preparation through to modeling,
+interpretation, and communication of findings.
+
+| Dataset Engineering
+| ML Lifecycle Stage
+| The discipline of designing, collecting, cleaning, labeling, and maintaining
+datasets used to train and evaluate AI models. Data quality directly
+determines model quality. Dataset engineering is increasingly recognized
+as a primary determinant of AI system performance.
+
+| Deep Learning
+| AI Subfield
+| A subfield of machine learning that uses neural networks with many layers
+to learn increasingly abstract representations of data. It is the technique
+behind most modern AI breakthroughs including image recognition, speech
+processing, and large language models.
+
+| Diffusion Model
+| Model Architecture
+| A generative model that learns to produce data by training on the process
+of progressively adding and then reversing noise. Diffusion models are the
+architecture behind most modern image generation systems including Stable
+Diffusion and DALL-E.
+
+| EU Artificial Intelligence Act
+| Regulation
+| A regulatory framework enacted by the European Union that classifies AI
+systems by risk level and imposes corresponding obligations on developers
+and deployers, from transparency requirements for limited-risk systems to
+outright prohibition of unacceptable-risk applications. It is the first
+comprehensive legal framework for AI and has significant implications for
+any organization building or deploying AI systems that touch EU markets.
+
+| Final Testing & Evaluation
+| ML Lifecycle Stage
+| The stage of model development in which a trained model is assessed against
+a held-out test dataset to measure real-world performance before deployment.
+It provides an unbiased estimate of how the model will perform on data it
+has never seen.
+
+| Fine-Tuning
+| ML Lifecycle Stage
+| The process of further training a pre-trained foundation model on a smaller,
+domain-specific dataset to adapt its behavior for a particular task or context.
+Fine-tuning allows organizations to customize general-purpose models without
+training from scratch, significantly reducing cost and data requirements.
+
+| Foundation Model
+| Model Classification
+| A large model trained on broad, general-purpose data at significant scale,
+designed to be adapted to a wide range of downstream tasks through fine-tuning
+or prompting. Foundation models represent a shift where a single large training
+investment produces a base that many applications and use cases build upon.
+
+| Generative Adversarial Network (GAN)
+| Generative AI Type
+| A machine learning architecture in which two neural networks, a generator
+and a discriminator, are trained in opposition, with the generator learning
+to produce synthetic outputs convincing enough to fool the discriminator.
+GANs were the dominant generative architecture for images and media before
+diffusion models became prevalent.
+
+| Generative AI
+| Model Classification
+| A category of AI system designed to produce new content such as text, images,
+audio, code, or video by learning the underlying patterns and structure
+of its training data. Large language models and GANs are both examples of
+generative AI applied to different output modalities.
+
+| Hallucination
+| Model Behavior
+| The phenomenon in which an AI model generates output that is fluent and
+confident but factually incorrect, fabricated, or inconsistent with the
+provided context. Hallucination is a fundamental risk in LLM-based systems
+and must be mitigated through design patterns such as retrieval-augmented
+generation, output validation, and human review.
+
+| Hybrid Model
+| Model Classification
+| An AI system that combines two or more model types or approaches, such
+as a neural network paired with a rules-based system, or an LLM augmented
+with retrieval. Hybrid models are used when no single approach adequately
+addresses all requirements of a task.
+
+| Labeled Data
+| Data Classification
+| A dataset in which each example has been annotated with the correct answer
+or category by a human or automated process. Labeled data is the input
+required for supervised learning. The model learns by comparing its
+predictions against the provided labels.
+
+| Large Language Model (LLM)
+| Model Classification
+| A category of machine learning model trained on large volumes of text
+data using a transformer architecture. Designed to understand, reason
+over, and generate human language at scale. LLMs are the foundation of
+most modern AI assistants, code generation tools, and document processing
+capabilities.
+
+| Long Short-Term Memory (LSTM)
+| Model Architecture
+| A type of recurrent neural network designed to learn long-range dependencies
+in sequential data by using gating mechanisms to control what information is
+retained or discarded over time. LSTMs were the dominant architecture for
+sequence modeling tasks before transformers superseded them.
+
+| Machine Learning
+| AI Subfield
+| A subfield of artificial intelligence in which systems learn to perform
+tasks by identifying patterns in data rather than being explicitly programmed
+with rules. A machine learning system improves its performance on a task as
+it is exposed to more data.
+
+| Masked Language Model
+| Model Architecture
+| A model trained by randomly masking tokens in input text and learning to
+predict the masked tokens from their surrounding context. BERT is the
+canonical example. This training approach produces models well suited to
+language understanding tasks such as classification and named entity recognition.
+
+| Metadata
+| Data Classification
+| Data that describes other data, providing context such as origin, format,
+size, ownership, or classification without containing the subject content
+itself. In architecture, metadata is critical for data governance,
+discoverability, and lineage tracking across systems.
+
+| MNIST Database
+| Dataset
+| A widely used benchmark dataset containing 70,000 handwritten digit images
+labeled 0 through 9, used to train and evaluate image classification models.
+It is considered the "hello world" of machine learning and computer vision
+education.
+
+| Model
+| Foundational
+| A mathematical structure trained on data to recognize patterns and produce
+outputs such as predictions, classifications, or generated content. A model
+is the artifact that results from training. It encodes learned relationships
+between inputs and outputs without explicitly being programmed with rules.
+
+| Model Design
+| ML Lifecycle Stage
+| The process of selecting and specifying the architecture, training approach,
+and evaluation criteria for an AI model before training begins. Decisions
+made at this stage including architecture choice, loss function, and
+data requirements have downstream consequences on capability, cost, and
+deployability.
+
+| N-Gram
+| Foundational
+| A contiguous sequence of n items, typically words or characters, extracted
+from text, used to model language patterns statistically. N-grams were a
+foundational technique in pre-neural NLP and are still used in text analysis,
+spell checking, and as features in some traditional machine learning pipelines.
+
+| Narrow AI
+| Model Classification
+| An AI system designed and trained to perform a specific task or a limited
+range of tasks, with no ability to generalize beyond its training domain.
+All AI systems in production today including LLMs are narrow AI, despite
+their broad language capabilities.
+
+| Natural Language Processing (NLP)
+| AI Subfield
+| A subfield of AI concerned with enabling machines to understand, interpret,
+and generate human language. It underpins capabilities such as translation,
+sentiment analysis, summarization, and conversational interfaces, and forms
+the foundation on which LLMs are built.
+
+| Neural Network
+| Foundational
+| A computational model loosely inspired by the structure of biological
+brains, consisting of layers of interconnected nodes that transform inputs
+into outputs through learned weights. Neural networks are the foundational
+building block of deep learning and underpin most modern AI systems.
+
+| Neural Radiance Field (NeRF)
+| Model Architecture
+| A technique that represents a 3D scene as a continuous function learned
+by a neural network, enabling the synthesis of photorealistic novel viewpoints
+from a set of 2D images. NeRFs are used in 3D reconstruction, visual effects,
+and spatial computing applications.
+
+| Open Source AI
+| Model Classification
+| AI systems, tools, frameworks, or models whose source code, weights, or
+both are made publicly available under a license permitting inspection,
+modification, and redistribution. Open source AI enables organizations to
+self-host models, inspect training data and behavior, and avoid vendor lock-in.
+
+| Open Source Model
+| Model Classification
+| A trained AI model whose weights are publicly released, allowing anyone
+to download, deploy, and fine-tune without consuming a proprietary API.
+Examples include Llama and Mistral. Open source models are a key
+architectural option when data privacy, cost control, or customization
+requirements cannot be met by API-based consumption.
+
+| Post-Training
+| ML Lifecycle Stage
+| The set of processes applied to a pre-trained model to align its behavior
+with intended use, including fine-tuning, reinforcement learning from human
+feedback (RLHF), and safety evaluation. Post-training is where a general
+foundation model is shaped into a product suitable for deployment.
+
+| Pre-Training
+| ML Lifecycle Stage
+| The initial large-scale training of a model on broad general-purpose data,
+producing a foundation model with general language or domain understanding.
+Pre-training is computationally intensive and typically performed by AI
+providers. Most organizations consume pre-trained models rather than
+conducting pre-training themselves.
+
+| Preliminary Evaluation
+| ML Lifecycle Stage
+| An early assessment of model performance conducted during or after initial
+training, using a validation dataset to guide decisions about architecture,
+hyperparameters, and training data before committing to final training runs.
+It is distinct from final evaluation in that its purpose is to inform
+development decisions rather than certify production readiness.
+
+| Prompt Engineering
+| Discipline
+| The discipline of designing and refining the inputs provided to an AI model
+to produce accurate, reliable, and contextually appropriate outputs. Effective
+prompt engineering is an architectural concern when building AI-enabled systems
+as prompt design directly affects output quality, consistency, and safety.
+
+| Recurrent Neural Network (RNN)
+| Model Architecture
+| A neural network architecture designed for sequential data in which outputs
+from previous steps are fed back as inputs, giving the network a form of
+memory across a sequence. RNNs have been largely superseded by transformers
+for most sequence tasks, though they remain in use for specific time-series
+and streaming applications.
+
+| Reinforcement Learning
+| ML Paradigm
+| A machine learning approach in which a model learns by taking actions in
+an environment and receiving feedback as rewards or penalties, optimizing
+its behavior over time to maximize cumulative reward. It is used in
+robotics, game playing, and is a key technique in aligning LLM behavior
+through reinforcement learning from human feedback (RLHF).
+
+| Retrieval-Augmented Generation (RAG)
+| Architecture Pattern
+| A design pattern in which an LLM's response is grounded by first retrieving
+relevant content from an external knowledge source, typically a vector
+database, and providing that content as context in the prompt. RAG mitigates
+hallucination and knowledge staleness by anchoring generation in retrieved
+facts rather than relying solely on the model's trained parameters.
+
+| Self-Supervised Learning
+| ML Paradigm
+| A machine learning approach in which the model generates its own labels
+from the structure of unlabeled data, removing the need for human annotation.
+Pre-training of LLMs uses self-supervised learning. The model learns by
+predicting masked or next tokens in text, with the text itself providing
+the supervision signal.
+
+| Structured Data
+| Data Classification
+| Data that is organized into a predefined schema with clearly defined
+fields, types, and relationships. It is stored in a format that makes it
+directly queryable and processable without transformation.
+
+| Supervised Learning
+| ML Paradigm
+| A machine learning approach in which a model is trained on labeled examples
+where the correct output is known, learning to map inputs to outputs by
+minimizing the difference between its predictions and the provided labels.
+It is the most widely used machine learning paradigm, applied to tasks such
+as classification, regression, and prediction.
+
+| Traditional Machine Learning
+| Model Classification
+| Machine learning approaches that rely on hand-crafted features and
+statistical algorithms rather than deep neural networks, including decision
+trees, random forests, support vector machines, and linear regression.
+Traditional ML remains appropriate for structured data problems where
+interpretability, low latency, or limited training data make deep learning
+impractical.
+
+| Transformer
+| Model Architecture
+| A neural network architecture that processes input sequences by learning
+which parts of the input to attend to when producing each part of the output,
+using a mechanism called self-attention. Transformers are the architectural
+foundation of all modern LLMs and have largely replaced earlier sequential
+architectures such as RNNs and LSTMs for language tasks.
+
+| Turing Test
+| Foundational
+| A benchmark proposed by Alan Turing in 1950 in which a human evaluator
+engages in natural language conversation with both a human and a machine
+without knowing which is which. If the evaluator cannot reliably distinguish
+the machine from the human, the machine is considered to have passed. It
+remains a conceptual reference point for human-level language ability,
+though it is no longer considered a rigorous measure of intelligence.
+
+| U-Net
+| Model Architecture
+| A convolutional neural network architecture originally designed for
+biomedical image segmentation, characterized by a symmetric encoder-decoder
+structure with skip connections that preserve spatial detail. U-Net is widely
+used in image segmentation tasks and has become a core component in diffusion
+model architectures for image generation.
+
+| Unlabeled Data
+| Data Classification
+| A dataset in which examples have not been annotated with correct answers
+or categories, representing raw data in its collected form. Unlabeled data
+is the input for unsupervised learning and is far more abundant than labeled
+data as it requires no human annotation effort.
+
+| Unstructured Data
+| Data Classification
+| Data that does not conform to a predefined schema or data model. It
+carries information but requires interpretation, transformation, or
+specialized processing to extract meaning from it in a consistent way.
+
+| Unsupervised Learning
+| ML Paradigm
+| A machine learning approach in which a model finds structure, patterns,
+or groupings in unlabeled data without being given correct answers to learn
+from. Common applications include clustering, anomaly detection, and
+dimensionality reduction.
+
+| Vector Database
+| Architecture Pattern
+| A database designed to store and query high-dimensional numerical
+representations of data called embeddings, enabling similarity-based search
+rather than exact match lookup. Vector databases are a foundational
+infrastructure component in retrieval-augmented generation (RAG) patterns,
+where relevant content is retrieved by semantic similarity before being
+passed to an LLM as context.
+
+| Vector Embedding
+| Foundational
+| A numerical representation of data such as text, images, or audio as
+a point in a high-dimensional space, where semantic similarity corresponds
+to proximity in that space. Embeddings are the mechanism by which AI systems
+make unstructured data mathematically comparable and searchable.
+
+| Vectors
+| Foundational
+| An ordered list of numbers that represents a point or direction in
+multi-dimensional space. In AI, vectors are the fundamental data structure
+used to represent inputs, outputs, and internal model states. Embeddings
+are a specific application of vectors to encode semantic meaning.
+
+|===
