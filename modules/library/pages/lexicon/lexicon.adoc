@@ -1,0 +1,11 @@
+= Architecture Lexicon
+:toc: left
+:toc-title: Categories
+:toclevels: 2
+:icons: font
+
+A shared vocabulary for the architecture practice.
+Terms are grouped by category. Use the table of contents to navigate
+or use GitHub search to find specific terms.
+
+include::ai.adoc[]
