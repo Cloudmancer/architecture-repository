@@ -1,0 +1,6 @@
+= Guides: Terraform Standards and Best Practices
+:toc:
+:toclevels: 4
+:sectnums:
+
+include::sections/variables.adoc[]
