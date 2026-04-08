@@ -1,0 +1,331 @@
+== Variables
+
+Variables are the primary interface between a Terraform module and its callers. Consistent structure, naming, and documentation make modules predictable, self-describing, and easier to validate and maintain.
+
+=== Styling Guidelines
+
+These guidelines define how variable files are organized and how individual variable blocks are structured. Consistent style ensures that variables are easy to locate, read, and maintain across modules of any size.
+
+==== File Organization
+
+* All variable files must contain `variables.tf` in the filename and use the `.tf` extension (e.g. network_variables.tf, compute_variables.tf, etc).
+* Larger modules may split variables across multiple files for organization; the `variables.tf` suffix is required on all of them.
+* Within each file, required variables must appear first under a `# Required Variables` comment header, followed by optional variables under `# Optional Variables`.
+* Within each section, variables must be listed in alphabetical order by variable name, even when validation blocks are added.
+
+[source,hcl]
+----
+# variables.tf
+
+# Required Variables
+...
+
+# Optional Variables
+...
+----
+
+==== Variable Block Structure
+
+[source,hcl]
+----
+variable "<argument_name>" {
+  description = "<argument_description>"          # Use heredoc if line exceeds 100 characters
+  type        = <argument_type>                   # Declare explicit types when possible; prefer complex types over loosely defined types
+  default     = <argument_default_value>          # Only for optional variables
+  sensitive   = true                              # Only for sensitive variables
+
+  validation {                                    # Only when validation rules apply
+    condition     = (
+      <validation_condition>
+    )
+    error_message = "<validation_error_message>"  # Use heredoc if line exceeds 100 characters
+  }
+}
+----
+
+* Each variable block must include a `description` and `type`, and if the variable is optional, a `default` value.
+* The variable description should contain the exact wording from the Terraform provider documentation for that argument, with the argument name prefix and any usage markers such as `(Optional)`, or `(Required)` removed. If no provider documentation exists (e.g. for a module-internal variable), write a clear, concise description in the same style.
+* The variable description must end with a period. If the provider text does not end with a period, add one.
+* Use `snake_case` for variable names to maintain consistency with Terraform conventions.
+* Names should be descriptive and concise, clearly indicating the purpose of the variable, and when applicable follow the name in the provider documentation for the argument being exposed by the module.
+* Names that represent a `list` or `map` of objects should use a plural noun (e.g. `security_groups`, not `security_group`).
+* Optional variables must use defaults based on the argument type unless an explicit value is required by the module design:
+  ** Optional lists must default to `[]`.
+  ** Optional maps must default to `{}`.
+  ** Optional objects must default to `null`.
+  ** Optional strings with no explicit default value must default to `null`.
+  ** Optional numbers with no explicit default value must default to `null` unless a provider-documented default value is specified.
+  ** Optional booleans must default to `true` or `false` based on the provider-documented behavior.
+* If a variable is sensitive, it must include `sensitive = true` and must not have a hardcoded `default` value.
+* Validation blocks must be included when validation rules apply, or when the Terraform provider documentation specifies a fixed list of allowed values. Full validation rules are covered in the Validation Guidelines section.
+
+==== Line Length & Wrapping
+
+* All lines of code should be wrapped at *100 characters or fewer*, including lines within heredocs.
+* Use `<<EOF` (not `<<-EOF`) for heredoc values to avoid unintended whitespace stripping.
+* Apply heredocs syntax to descriptions and error messages that would exceed 100 characters on a single line.
+* When using heredoc syntax, the content inside the heredoc must be indented *2 additional spaces* beyond the attribute name. The closing EOF must match the content indentation.
+
+[source,hcl]
+----
+variable "example_variable" {
+  description = <<EOF
+    This is an example variable description that exceeds 100 characters in length and therefore
+    uses a heredoc for proper formatting and readability.
+    EOF
+  type = string
+
+  validation {
+    condition = (
+      length(var.example_variable) > 10
+    )
+    error_message = <<EOF
+      The example_variable must be longer than 10 characters to meet the validation criteria.
+      EOF
+  }
+}
+----
+
+==== Types
+
+* Declare explicit types (e.g. string, number, bool, list, map, etc) on all variables when possible.
+* Prefer complex types (e.g. object, tuple) over loosely defined types such as `any` to enhance validation and maintainability.
+* Use `null` only when it is a valid and intentional module interface choice, such as for optional strings or objects where `null` indicates the absence of a value.
+* Use `optional()` within `object` types to allow for optional attributes.
+* When the provider documentation specifies a default value for an argument, that default must be expressed directly in the `optional()` call using its second argument, rather than relying on a top-level `default` block. This keeps the defaul co-located within the attribute declaration and makes it self-documenting.
+
+[source,hcl]
+----
+# Correct - default expressed in optional()
+type = object({
+  disk_size = optional(number, 10)
+  strategy  = optional(string, "SURGE")
+})
+
+# Incorrect - default buried in top-level default block or omitted entirely
+type = object({
+  disk_size = optional(number)
+})
+default = { disk_size = 100 }
+----
+
+==== Sensitive Variables
+
+* Any variable holding a secret, credential, or private value must include `sensitive = true` to prevent accidental exposure in logs or Terraform output.
+* Sensitive variables must never have hardcoded `default` values in the codebase.
+
+
+=== Validation Guidelines
+
+Validation rules enforce correctness at plan time, before any infrastructure is created or modified. Add validation whenever the provider documents a fixed set of allowed values, or when an invalid input would cause a non-obvious failure.
+
+Validation blocks must follow this format. Each field is described below.
+
+[source,hcl]
+----
+  validation {                                    # Only when validation rules apply
+    condition     = (
+      <validation_condition>
+    )
+    error_message = "<validation_error_message>"  # Use heredoc if line exceeds 100 characters
+  }
+----
+
+* The `condition` must be a null-safe expression that evaluates to `true` when the value is valid and `false` when it is invalid.
+* Wrap the condition in parentheses to improve readability, especially for complex or multi-function expressions. Use line breaks and indentation for clarity.
+* Use Terraform built-in functions such as `contains()`, `length()`, and `regex()` to enforce provider-documented constraints.
+* The `error_message` must clearly state what the allowed values or constraint are. Use a heredoc if the message exceeds 100 characters.
+* Every validation block must be preceded by a comment describing its purpose. The comment should explain what is being enforced and, where relevant, why, particularly when the logic is non-obvious such as a `== 0` default guard or a `can(regex(...))` format check.
+
+==== Validation Coverage for Nested Object Attributes
+
+Validation blocks must be written not only for top-level variable attributes but for any attribute within a nested object type where the provider documents a constraint. When reviewing a variable with a complex type, every attribute within every nested object should be evaluated for whether a validation block is needed.
+
+Common cases that require validation in nested objects include:
+
+* Attributes with a fixed allowed-values list (use contains() or regex()).
+* Attributes with a minimum or maximum numeric constraint (use >, <, >=, <=).
+* Attributes with a required string format such as a resource path or duration (use can(regex())).
+* Attributes that are only valid when another sibling attribute is set to a specific value (use && to combine both checks).
+* Attributes that are mutually exclusive with another attribute (use !(a != null && b != null)).
+
+*Example - simple allowed-values validation:*
+
+[source,hcl]
+----
+variable "binary_authorization" {
+  description = <<EOF
+    Configuration options for the Binary Authorization feature. This is an object that can contain
+    an evaluation_mode, such as PROJECT_SINGLETON_POLICY_ENFORCE.
+    EOF
+  type = object({
+    evaluation_mode = optional(string)
+  })
+  default = null
+
+  validation {
+    condition = (
+      var.binary_authorization == null ? true : contains(
+        ["DISABLED", "POLICY_BINDINGS_ENFORCE", "PROJECT_SINGLETON_POLICY_ENFORCE"],
+        var.binary_authorization.evaluation_mode
+      )
+    )
+    error_message = <<EOF
+      The evaluation_mode must be one of: DISABLED, POLICY_BINDINGS_ENFORCE, or
+      PROJECT_SINGLETON_POLICY_ENFORCE.
+      EOF
+  }
+}
+
+----
+
+
+
+==== Null-Safe Chaining Pattern for Nested Validation Condition
+
+When writing validation conditions for attributes inside nested objects, every layer of the object hierachy must be null-guarded before accessing the next level. The standard pattern is a chain of ternary expressions working from the outermost object inward, with each layer short-circuiting to `true` when null. Only after all guards have passed should the actual constraint be evaluated.
+
+*Simple nested validation:*
+
+[source,hcl]
+----
+# Ensures inner_field satisfies the required constraint.
+validation {
+  condition = (
+    var.outer == null ? true :
+    var.outer.middle == null ? true :
+    var.outer.middle.inner == null ? true :
+    <constraint on var.outer.middle.inner>
+  )
+  error_message = "..."
+}
+----
+
+*Combining an inner dependency with a format check using &&:*
+
+[source,hcl]
+----
+# Ensures inner is only set when field_a is set to "specific_value", and field_b follows the specific regex format when inner is set.
+validation {
+  condition = (
+    var.outer == null ? true :
+    var.outer.middle == null ? true :
+    var.outer.middle.inner == null ? true : (
+      var.outer.middle.field_a == "specific_value" && (
+        var.outer.middle.inner.field_b ==null ? true :
+        can(regex("^pattern$", var.outer.middle.inner.field_b))
+      )
+    )
+  )
+  error_message = "..."
+}
+----
+
+*Mutually exclusive pattern:*
+
+[source,hcl]
+----
+# Ensures inner_field satisfies the required constraint.
+validation {
+  condition = (
+    var.outer == null ? true :
+    var.outer.middle == null ? true : !(
+      var.outer.middle.field_a != null &&
+      var.outer.middle,field_b != null
+    )
+  )
+  error_message = "field_a and field_b are mutually exclusive. Only one may be set."
+}
+----
+
+
+==== Example Validation Patterns
+
+*Fixed allowed-values list:*
+
+[source,hcl]
+----
+  # Ensures strategy, if provided, is one of the two upgrade strategies supported by GKE.
+  validation {
+    condition = (
+      var.cluster_autoscaling == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.strategy == null ? true :
+      contains(
+        ["SURGE", "BLUE_GREEN"],
+        var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.strategy
+      )
+    )
+    error_message = "The upgrade_settings strategy must be one of: SURGE or BLUE_GREEN."
+  }
+----
+
+*Ensure resource path format:
+
+[source,hcl]
+----
+  # Ensures boot_disk_kms_key, if provided, follows the required Cloud KMS resource
+  # path format: projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+  validation {
+    condition = (
+      var.cluster_autoscaling == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.boot_disk_kms_key == null ? true :
+      can(regex(
+        "^projects/[^/]+/locations/[^/]+/keyRings/[^/]+/cryptoKeys/[^/]+$",
+        var.cluster_autoscaling.auto_provisioning_defaults.boot_disk_kms_key
+      ))
+    )
+    error_message = <<EOF
+      The boot_disk_kms_key must be of the form:
+      projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+      EOF
+  }
+----
+
+*Service Account email format:*
+
+[source,hcl]
+----
+  # Ensures service_account, if provided, is a valid GCP service account email address.
+  validation {
+    condition = (
+      var.cluster_autoscaling == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.service_account == null ? true :
+      can(regex(
+        "^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]+\\.iam\\.gserviceaccount\\.com$",
+        var.cluster_autoscaling.auto_provisioning_defaults.service_account
+      ))
+    )
+    error_message = <<EOF
+      The service_account must be a valid GCP service account email of the form:
+      [NAME]@[PROJECT_ID].iam.gserviceaccount.com.
+      EOF
+  }
+
+----
+
+*Percentage range check:*
+
+[source,hcl]
+----
+  # Ensures batch_percentage, if provided, is a value strictly between 0 and 1 exclusive.
+  validation {
+    condition = (
+      var.cluster_autoscaling == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.blue_green_settings == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.blue_green_settings.standard_rollout_policy == null ? true :
+      var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.blue_green_settings.standard_rollout_policy.batch_percentage == null ? true :
+      (
+        var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.blue_green_settings.standard_rollout_policy.batch_percentage > 0 &&
+        var.cluster_autoscaling.auto_provisioning_defaults.upgrade_settings.blue_green_settings.standard_rollout_policy.batch_percentage < 1
+      )
+    )
+    error_message = "The standard_rollout_policy batch_percentage must be greater than 0 and less than 1."
+  }
+
+----
